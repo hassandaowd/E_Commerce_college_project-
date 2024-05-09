@@ -21,4 +21,4 @@ void printFullText(String text){
 
 String token ='';
 
-String localhost ='192.168.1.11';
+//String localhost ='192.168.1.11';

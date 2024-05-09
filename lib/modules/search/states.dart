@@ -1,11 +1,11 @@
-abstract class SearchStates{}
-
-class SearchInitialState extends SearchStates{}
-
-class SearchLoadingState extends SearchStates{}
-
-class SearchSuccessState extends SearchStates{}
-
-class SearchErrorState extends SearchStates{}
-
-class SearchChangeFav extends SearchStates{}
+// abstract class SearchStates{}
+//
+// class SearchInitialState extends SearchStates{}
+//
+// class SearchLoadingState extends SearchStates{}
+//
+// class SearchSuccessState extends SearchStates{}
+//
+// class SearchErrorState extends SearchStates{}
+//
+// class SearchChangeFav extends SearchStates{}

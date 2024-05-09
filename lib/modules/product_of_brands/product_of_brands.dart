@@ -1,5 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:e_commerce_app/models/landing.dart';
+import 'package:e_commerce_app/modules/intro.dart';
 import 'package:e_commerce_app/modules/product_details/product_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,8 +9,8 @@ import 'package:e_commerce_app/layout/states.dart';
 import 'package:e_commerce_app/shared/components/components.dart';
 import 'package:e_commerce_app/shared/styles/colors.dart';
 
-class ProductsScreen extends StatelessWidget {
-  const ProductsScreen({super.key});
+class ProductsOfBrandsScreen extends StatelessWidget {
+  const ProductsOfBrandsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,57 +23,55 @@ class ProductsScreen extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        return ConditionalBuilder(
-          condition: cubit.landingProduct != null,
-          builder: (context) => builder(cubit.landingProduct!, context),
-          fallback: (context) => (state is! ShopErrorHomeDataStates &&
-                  state is! GetBrandErrorState &&
-                  state is! ShopChangeBottomNavState &&
-                  state is! SearchInitialState)
-              ? const Center(child: CircularProgressIndicator())
-              : const Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(15.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('There is a problem in your network'),
-                        // const SizedBox(height: 20,),
-                        // defaultButton(function: (){
-                        //   navigateToFinish(context, const Intro());
-                        // }, text: 'update your ip address'),
-                      ],
-                    ),
-                  ),
-                ),
+        bool b = (cubit.productOfBrands!.landingProduct!.length == 1);
+        return Scaffold(
+          appBar: AppBar(),
+          body: ConditionalBuilder(
+            condition: cubit.productOfBrands != null,
+            builder: (context) => builder(cubit.productOfBrands! ,context,b ),
+            fallback: (context) =>
+            state is! ShopErrorHomeDataStates ?
+            const Center(child: CircularProgressIndicator()) :
+            const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('There is a problem in your network'),
+                ],
+              ),
+            ),
+          ),
         );
       },
     );
   }
 
-  Widget builder(LandingModel model, context) => SingleChildScrollView(
-        child: Container(
-          color: Colors.grey[300],
-          child: GridView.count(
-            mainAxisSpacing: 1,
-            crossAxisSpacing: 1,
-            childAspectRatio: 1 / 1.77,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 2,
-            children: List.generate(
-              model.landingProduct!.length,
-              (index) =>
-                  buildGridProduct(model.landingProduct![index], context),
-            ),
+  Widget builder(LandingModel model , context,bool b)=> SingleChildScrollView(
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Container(
+        color: b ? Colors.white :Colors.grey[300],
+        child: GridView.count(
+          mainAxisSpacing: 1,
+          crossAxisSpacing: 1,
+          childAspectRatio: 1 / 1.77,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          crossAxisCount: 2,
+          children: List.generate(
+            model.landingProduct!.length,
+                (index) =>
+                buildGridProduct(model.landingProduct![index], context),
           ),
         ),
-      );
+      ),
+    ),
+  );
 
   Widget buildGridProduct(LandingProduct model, BuildContext context) =>
       InkWell(
-        onTap: () {
+        onTap: (){
           ShopCubit.get(context).getProductData(asin: model.asin!);
         },
         child: Container(
@@ -102,7 +101,7 @@ class ProductsScreen extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          model.price ?? 'not available',
+                          model.price ?? 'not available' ,
                           style: const TextStyle(
                             fontSize: 12,
                             color: defaultColor,
@@ -118,37 +117,37 @@ class ProductsScreen extends StatelessWidget {
         ),
       );
 
-  Widget image(String? url) => Image(
-        image: NetworkImage(url!),
-        width: double.infinity,
+  Widget image(String? url)=>Image(
+    image: NetworkImage(url!),
+    width: double.infinity,
+    height: 200,
+    errorBuilder: (BuildContext context, Object object,
+        StackTrace? stackTrace) {
+      return const SizedBox(
         height: 200,
-        errorBuilder:
-            (BuildContext context, Object object, StackTrace? stackTrace) {
-          return const SizedBox(
-            height: 200,
-            width: double.infinity,
-            child: Center(
-              child: Icon(
-                Icons.error,
-                color: Colors.red,
-              ),
-            ),
-          );
-        },
-        loadingBuilder: (BuildContext context, Widget child,
-            ImageChunkEvent? loadingProgress) {
-          if (loadingProgress == null) {
-            return child;
-          }
-          return const SizedBox(
-            height: 200,
-            width: double.infinity,
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        },
+        width: double.infinity,
+        child: Center(
+          child: Icon(
+            Icons.error,
+            color: Colors.red,
+          ),
+        ),
       );
+    },
+    loadingBuilder: (BuildContext context, Widget child,
+        ImageChunkEvent? loadingProgress) {
+      if (loadingProgress == null) {
+        return child;
+      }
+      return const SizedBox(
+        height: 200,
+        width: double.infinity,
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    },
+  );
 }
 
 // Widget buildCategoryItem(DataCatModel model) => Stack(
@@ -197,6 +196,7 @@ class ProductsScreen extends StatelessWidget {
 //         ),
 //       ],
 //     );
+
 
 // Widget productsBuilder(HomeModel model, CategoriesModel categoriesModel,
 //         BuildContext context) =>

@@ -34,7 +34,7 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     "Debug" "Profile" "Release")
 endif()
 
-# Compilation settings that should be applied to most targets.
+# Compilation your_orders that should be applied to most targets.
 #
 # Be cautious about adding new options here, as plugins use this function by
 # default. In most cases, you should add new options to specific targets instead
@@ -66,8 +66,8 @@ add_executable(${BINARY_NAME}
   "${FLUTTER_MANAGED_DIR}/generated_plugin_registrant.cc"
 )
 
-# Apply the standard set of build settings. This can be removed for applications
-# that need different build settings.
+# Apply the standard set of build your_orders. This can be removed for applications
+# that need different build your_orders.
 apply_standard_settings(${BINARY_NAME})
 
 # Add dependency libraries. Add any application-specific dependencies here.

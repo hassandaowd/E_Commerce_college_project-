@@ -22,7 +22,8 @@ class ShopLayoutScreen extends StatelessWidget {
               IconButton(
                   onPressed: (){
                     //cubit.getHomeData();
-                    navigateTo(context, SearchScreen());
+                    cubit.goToSearch(context);
+                    //navigateTo(context, SearchScreen());
                   }, icon: const Icon(Icons.search))
             ],
           ),
@@ -35,7 +36,7 @@ class ShopLayoutScreen extends StatelessWidget {
               ),
               BottomNavigationBarItem(
                   icon: Icon(Icons.apps),
-                  label: 'Categories'
+                  label: 'Brands'
               ),
               BottomNavigationBarItem(
                   icon: Icon(Icons.add),
@@ -47,8 +48,8 @@ class ShopLayoutScreen extends StatelessWidget {
                   label: 'Chart'
               ),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.settings),
-                  label: 'Settings'
+                  icon: Icon(Icons.shopping_bag),
+                  label: 'Orders'
               ),
             ],
             onTap: (index){cubit.changeCurrentIndex(index , context);},

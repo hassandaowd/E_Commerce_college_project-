@@ -2,7 +2,7 @@ const loginUrl = 'login';
 
 const homeUrl = 'home';
 
-const getCategoriesUrl = 'categories';
+const getCategoriesUrl = 'brands';
 
 const favouritesUrl  = 'my_chart';
 

@@ -1,4 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:e_commerce_app/layout/cubit.dart';
+import 'package:e_commerce_app/layout/states.dart';
+import 'package:e_commerce_app/modules/product_of_brands/product_of_brands.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:e_commerce_app/modules/search/cubit.dart';
@@ -13,15 +16,19 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SearchCubit, SearchStates>(
-      listener: (context, state) {},
+    return BlocConsumer<ShopCubit, ShopStates>(
+      listener: (context, state) {
+        if (state is ShopSuccessProductBrandsStates) {
+          navigateTo(context, const ProductsOfBrandsScreen());
+        }
+      },
       builder: (context, state) {
-        var cubit = SearchCubit.get(context);
+        var cubit = ShopCubit.get(context);
 
         return Scaffold(
             appBar: AppBar(
               leading: IconButton(onPressed: (){
-                cubit.model!.search =[];
+                //cubit.model!.search =[];
                 Navigator.pop(context);
               }, icon: const Icon(Icons.arrow_back)),
             ),
@@ -39,10 +46,10 @@ class SearchScreen extends StatelessWidget {
                         return null;
                       },
                       onFieldSubmitted: (value) {
-                        SearchCubit.get(context).search(value);
+                        ShopCubit.get(context).search(value);
                       },
                       onChanged: (value){
-                        SearchCubit.get(context).search(value);
+                        ShopCubit.get(context).search(value);
                       },
                       decoration: const InputDecoration(
                         label: Text('Search'),
@@ -54,21 +61,23 @@ class SearchScreen extends StatelessWidget {
                       height: 10,
                     ),
                     (state is SearchInitialState) ? Container() :
-                    ConditionalBuilder(
-                      condition: state is! SearchLoadingState ,
-                      builder: (context) => Expanded(
-                        child: (cubit.model!.search!.isEmpty)
-                            ?  Padding(
-                              padding: const EdgeInsets.only(top: 40),
-                              child: Text('There is nothing to show',style: Theme.of(context).textTheme.titleMedium,),
-                            )
-                            : ListView.separated(
-                          itemBuilder: (context, index) => buildSearchItem(cubit.model!.search![index],context),
-                          separatorBuilder: (context, index) => separateList(),
-                          itemCount: cubit.model!.search!.length ,
+                    Expanded(
+                      child: ConditionalBuilder(
+                        condition: state is! SearchLoadingState ,
+                        builder: (context) => Expanded(
+                          child: (cubit.model!.search!.isEmpty)
+                              ?  Padding(
+                                padding: const EdgeInsets.only(top: 40),
+                                child: Text('There is nothing to show',style: Theme.of(context).textTheme.titleMedium,),
+                              )
+                              : ListView.separated(
+                            itemBuilder: (context, index) => buildSearchItem(cubit.model!.search![index],context),
+                            separatorBuilder: (context, index) => separateList(),
+                            itemCount: cubit.model!.search!.length ,
+                          ),
                         ),
+                        fallback: (context) => const LinearProgressIndicator(),
                       ),
-                      fallback: (context) => const LinearProgressIndicator(),
                     ),
                   ],
                 ),
@@ -80,7 +89,10 @@ class SearchScreen extends StatelessWidget {
   }
 
   Widget buildSearchItem(String? model, BuildContext context) => InkWell(
-    onTap: (){},
+    onTap: (){
+      ShopCubit.get(context).getProductOfBrands(brandName: model);
+
+    },
     child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: SizedBox(

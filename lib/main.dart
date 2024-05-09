@@ -1,4 +1,5 @@
 //import 'package:bloc/bloc.dart';
+import 'package:e_commerce_app/modules/intro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'layout/cubit.dart';
@@ -46,8 +47,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => ShopCubit()..getHomeData()),
-        BlocProvider(create: (BuildContext context) => SearchCubit()),
+        BlocProvider(create: (context) => ShopCubit()..getHomeData()..getBrands()),
+        //BlocProvider(create: (BuildContext context) => SearchCubit()),
       ],
       child: BlocConsumer<ShopCubit , ShopStates>(
         listener: (context , states)  {},

@@ -24,17 +24,17 @@ class AddProduct extends StatelessWidget {
   var industryController = TextEditingController();
 
   var formKey = GlobalKey<FormState>();
-  void makeTextEmpty(){
-    titleController.text = '' ;
-    asinController.text = '' ;
-    priceController.text = '' ;
-    brandNameController.text = '' ;
-    categoryController.text = '' ;
-    featuresDetailsController.text = '' ;
-    productDetailsController.text = '' ;
-    locationController.text = '' ;
-    industryController.text = '' ;
-    maliciousUrlController.text = '' ;
+  void makeTextEmpty() {
+    titleController.text = '';
+    asinController.text = '';
+    priceController.text = '';
+    brandNameController.text = '';
+    categoryController.text = '';
+    featuresDetailsController.text = '';
+    productDetailsController.text = '';
+    locationController.text = '';
+    industryController.text = '';
+    maliciousUrlController.text = '';
     imageUrlController.text = '';
   }
 
@@ -45,17 +45,29 @@ class AddProduct extends StatelessWidget {
     return BlocConsumer<ShopCubit, ShopStates>(
       listener: (context, state) {
         if (state is ShopSuccessAddProductStates) {
-          cubit.changeCurrentStep(0);
-          cubit.changeCurrentIndex(0,context);
-          navigateToFinish(context, const ShopLayoutScreen());
+          if (cubit.addProductModel!.status == 'success') {
+            cubit.changeCurrentStep(0);
+            cubit.changeCurrentIndex(0, context);
+            navigateToFinish(context, const ShopLayoutScreen());
 
-          cubit.getHomeData();
-          makeTextEmpty();
-          toast(
-            msg: 'Product has been added successfully',
-            state: ToastState.success,
-          );
+            cubit.getHomeData();
+            makeTextEmpty();
+            toast(
+              msg: 'Product has been added successfully',
+              state: ToastState.success,
+            );
+          } else if (cubit.addProductModel!.status == 'error') {
+            cubit.changeCurrentStep(0);
+            cubit.changeCurrentIndex(0, context);
+            navigateToFinish(context, const ShopLayoutScreen());
 
+            cubit.getHomeData();
+            makeTextEmpty();
+            toast(
+              msg: cubit.addProductModel!.message!,
+              state: ToastState.error,
+            );
+          }
         } else if (state is ShopErrorAddProductStates) {
           toast(
             msg: 'Error when add product',
@@ -64,48 +76,47 @@ class AddProduct extends StatelessWidget {
         }
       },
       builder: (context, state) {
-
         List<Step> getSteps() => [
-          Step(
-            state: cubit.currentStep > 0
-                ? StepState.complete
-                : StepState.indexed,
-            isActive: cubit.currentStep >= 0,
-            title: const Text('Product'),
-            content: firstStep(
-              context: context,
-              catController: categoryController,
-              priceController: priceController,
-              titleController: titleController,
-              asinController: asinController,
-              brandController: brandNameController,
-            ),
-          ),
-          Step(
-            state: cubit.currentStep > 1
-                ? StepState.complete
-                : StepState.indexed,
-            isActive: cubit.currentStep >= 1,
-            title: const Text('Details'),
-            content: secondStep(
-                context: context,
-                productDetailsController: productDetailsController,
-                featuresController: featuresDetailsController,
-                locationController: locationController),
-          ),
-          Step(
-            state: cubit.currentStep > 2
-                ? StepState.complete
-                : StepState.indexed,
-            isActive: cubit.currentStep >= 2,
-            title: const Text('Urls'),
-            content: thirdStep(
-              maliciousController: maliciousUrlController,
-              imagesController: imageUrlController,
-              industryController: industryController,
-            ),
-          ),
-        ];
+              Step(
+                state: cubit.currentStep > 0
+                    ? StepState.complete
+                    : StepState.indexed,
+                isActive: cubit.currentStep >= 0,
+                title: const Text('Product'),
+                content: firstStep(
+                  context: context,
+                  catController: categoryController,
+                  priceController: priceController,
+                  titleController: titleController,
+                  asinController: asinController,
+                  brandController: brandNameController,
+                ),
+              ),
+              Step(
+                state: cubit.currentStep > 1
+                    ? StepState.complete
+                    : StepState.indexed,
+                isActive: cubit.currentStep >= 1,
+                title: const Text('Details'),
+                content: secondStep(
+                    context: context,
+                    productDetailsController: productDetailsController,
+                    featuresController: featuresDetailsController,
+                    locationController: locationController),
+              ),
+              Step(
+                state: cubit.currentStep > 2
+                    ? StepState.complete
+                    : StepState.indexed,
+                isActive: cubit.currentStep >= 2,
+                title: const Text('Urls'),
+                content: thirdStep(
+                  maliciousController: maliciousUrlController,
+                  imagesController: imageUrlController,
+                  industryController: industryController,
+                ),
+              ),
+            ];
 
         void continueFun() {
           if (cubit.currentStep != 2) {
@@ -133,8 +144,7 @@ class AddProduct extends StatelessWidget {
                   category: categoryController.text,
                   image: imageUrlController.text,
                   industry: industryController.text,
-                  brandName: brandNameController.text
-              );
+                  brandName: brandNameController.text);
             } else {
               toast(
                 msg: 'not complete data',
@@ -150,7 +160,7 @@ class AddProduct extends StatelessWidget {
           ),
           body: Column(
             children: [
-              if(state is ShopLoadingAddProductStates)
+              if (state is ShopLoadingAddProductStates)
                 const LinearProgressIndicator(),
               Expanded(
                 child: Padding(
@@ -172,8 +182,9 @@ class AddProduct extends StatelessWidget {
                               Expanded(
                                 child: ElevatedButton(
                                   onPressed: details.onStepContinue,
-                                  child:
-                                  Text(cubit.currentStep != 2 ? 'Next' : 'Confirm'),
+                                  child: Text(cubit.currentStep != 2
+                                      ? 'Next'
+                                      : 'Confirm'),
                                 ),
                               ),
                               const SizedBox(
@@ -203,12 +214,12 @@ class AddProduct extends StatelessWidget {
 }
 
 Widget firstStep(
-    {context,
-      titleController,
-      asinController,
-      priceController,
-      brandController,
-      catController}) =>
+        {context,
+        titleController,
+        asinController,
+        priceController,
+        brandController,
+        catController}) =>
     Column(
       children: [
         customField(
@@ -232,9 +243,10 @@ Widget firstStep(
           height: 10,
         ),
         customField(
-            label: 'Brand Name',
-            prefix: Icons.branding_watermark_outlined,
-            controller: brandController,),
+          label: 'Brand Name',
+          prefix: Icons.branding_watermark_outlined,
+          controller: brandController,
+        ),
         const SizedBox(
           height: 10,
         ),
@@ -247,10 +259,10 @@ Widget firstStep(
     );
 
 Widget secondStep(
-    {productDetailsController,
-      featuresController,
-      context,
-      locationController}) =>
+        {productDetailsController,
+        featuresController,
+        context,
+        locationController}) =>
     Column(
       children: [
         customField(
@@ -278,7 +290,7 @@ Widget secondStep(
     );
 
 Widget thirdStep(
-    {maliciousController, imagesController, context, industryController}) =>
+        {maliciousController, imagesController, context, industryController}) =>
     Column(
       children: [
         customField(
@@ -306,11 +318,11 @@ Widget thirdStep(
     );
 
 Widget customField(
-    {controller,
-      type = TextInputType.name,
-      String? validate,
-      label = 'This field can not be empty.',
-      prefix}) =>
+        {controller,
+        type = TextInputType.name,
+        String? validate,
+        label = 'This field can not be empty.',
+        prefix}) =>
     defaultFormField(
       onChange: (value) {},
       onTap: (value) {},

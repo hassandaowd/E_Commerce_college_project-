@@ -16,7 +16,7 @@ class ShopRegisterCubit extends Cubit<ShopRegisterStates>{
 
   void userRegister({required String username , required String password  }){
     emit(ShopRegisterLoadingState());
-    print(localhost);
+    //print(localhost);
     DioHelper.postData(
       formData: FormData.fromMap({
         "action":"add_user",

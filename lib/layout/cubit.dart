@@ -1,13 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:e_commerce_app/layout/states.dart';
+import 'package:e_commerce_app/models/add_product_model.dart';
 import 'package:e_commerce_app/models/landing.dart';
 import 'package:e_commerce_app/models/product_details_model.dart';
 import 'package:e_commerce_app/models/search_model.dart';
-import 'package:e_commerce_app/modules/categories/categories_screen.dart';
+import 'package:e_commerce_app/modules/brands/brands_screen.dart';
 import 'package:e_commerce_app/modules/my_chart/my_chart_screen.dart';
 import 'package:e_commerce_app/modules/new_product/add_product.dart';
 import 'package:e_commerce_app/modules/products/products_screen.dart';
-import 'package:e_commerce_app/modules/settings/settings_screen.dart';
+import 'package:e_commerce_app/modules/search/search_screen.dart';
+import 'package:e_commerce_app/modules/your_orders/your_orders_screen.dart';
 import 'package:e_commerce_app/shared/components/components.dart';
 import 'package:e_commerce_app/shared/components/constants.dart';
 import 'package:e_commerce_app/shared/network/remote/dio_helper.dart';
@@ -24,10 +26,10 @@ class ShopCubit extends Cubit<ShopStates> {
 
   List<Widget> bottomScreen = [
     const ProductsScreen(),
-    const CategoriesScreen(),
+    const BrandsScreen(),
     AddProduct(),
     const MyChartScreen(),
-    SettingsScreen(),
+    const YourOrdersScreen(),
   ];
 
   void changeCurrentIndex(int index ,context) {
@@ -74,6 +76,8 @@ class ShopCubit extends Cubit<ShopStates> {
     });
   }
 
+
+  AddProductModel? addProductModel;
   void addNewProduct({
     String? title,
     String? asin,
@@ -94,7 +98,7 @@ class ShopCubit extends Cubit<ShopStates> {
       'asin': asin,
       'price': price,
       'brand_name': brandName,
-      'category': 'Example Category',
+      'category': category,
       'product_details': productDetails,
       'feature_details': featuresDetails,
       'malicious_url': malicious,
@@ -104,7 +108,7 @@ class ShopCubit extends Cubit<ShopStates> {
       'has_questions': '1',
       'industry': industry
     })).then((value) {
-      //productDetailModel = productDetailModelFromJson(value.data);
+      addProductModel = addProductModelFromJson(value.data);
       print(value.data);
       emit(ShopSuccessAddProductStates());
     }).catchError((error) {
@@ -117,6 +121,11 @@ class ShopCubit extends Cubit<ShopStates> {
 
   SearchModel? model ;
 
+  void goToSearch(context){
+    model = SearchModel();
+    navigateTo(context, SearchScreen());
+    emit(SearchInitialState());
+  }
   void search(String? search){
     emit(SearchBrandLoadingState());
 
@@ -128,6 +137,42 @@ class ShopCubit extends Cubit<ShopStates> {
       emit(SearchBrandErrorState());
     });
   }
+
+
+  SearchModel? brands ;
+
+
+
+  void getBrands(){
+    emit(GetBrandLoadingState());
+
+    DioHelper.getData(data: {'action':'brands'}).then((value) {
+      brands = searchModelFromJson(value.data);
+      emit(GetBrandSuccessState());
+    }).catchError((error){
+      //print(error.toString());
+      emit(GetBrandErrorState());
+    });
+  }
+
+  LandingModel? productOfBrands;
+
+  void getProductOfBrands({String? brandName}) {
+    emit(ShopLoadingProductBrandsStates());
+
+    DioHelper.getData(data: {'action': 'products_by_brand', 'brand_name': brandName}).then((value) {
+      productOfBrands = landingModelFromJson(value.data);
+      //print(value.data);
+      emit(ShopSuccessProductBrandsStates());
+    }).catchError((error) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+      emit(ShopErrorProductBrandsStates());
+    });
+  }
+
+
 
   List<ProductDetailModel> myChart = [];
   List<List<ProductDetailModel>> successfulTransaction = [];
@@ -191,121 +236,4 @@ class ShopCubit extends Cubit<ShopStates> {
     }
   }
 
-  //
-  // HomeModel? homeModel ;
-  //
-  // Map<int , bool> my_chart ={};
-  //
-  // void getHomeData(){
-  //   emit(ShopLoadingHomeDataStates());
-  //
-  //   DioHelper.getData(url: homeUrl , token: token).then((value) {
-  //     homeModel = HomeModel.fromJson(value.data);
-  //     //printFullText(homeModel!.data!.banners![0].image.toString());
-  //
-  //     my_chart = <int , bool>{};
-  //     for (var element in homeModel!.data!.products!) {
-  //       my_chart.addAll({element.id! : element.inFavorites!});
-  //     }
-  //
-  //     emit(ShopSuccessHomeDataStates());
-  //   }).catchError((error){
-  //     //print(error.toString());
-  //     emit(ShopErrorHomeDataStates());
-  //   });
-  // }
-  //
-  // CategoriesModel? categoriesModel ;
-  //
-  //
-  // void getCategories(){
-  //
-  //   DioHelper.getData(url: getCategoriesUrl , token: token).then((value) {
-  //     categoriesModel = CategoriesModel.fromJson(value.data);
-  //
-  //     emit(ShopSuccessCategoriesStates());
-  //   }).catchError((error){
-  //     //print(error.toString());
-  //     emit(ShopErrorCategoriesStates());
-  //   });
-  // }
-  //
-  // ChangeFavoritesModel? changeFavoritesModel;
-  //
-  //  void changeFavorites(int productId){
-  //   my_chart[productId] = !my_chart[productId]!;
-  //   emit(ShopChangeFavStates());
-  //
-  //   DioHelper.postData(
-  //       url: favouritesUrl,
-  //       data: {
-  //         'product_id' : productId
-  //       },
-  //     //token: token,
-  //   ).then((value) {
-  //     changeFavoritesModel = ChangeFavoritesModel.fromJson(value.data);
-  //     if(!changeFavoritesModel!.status!){
-  //       my_chart[productId] = !my_chart[productId]!;
-  //     }else{
-  //       getFavorites();
-  //     }
-  //
-  //     emit(ShopSuccessChangeFavStates(changeFavoritesModel!));
-  //   }).catchError((error){
-  //     my_chart[productId] = !my_chart[productId]!;
-  //
-  //     emit(ShopSuccessChangeFavStates(changeFavoritesModel!));
-  //   });
-  // }
-  //
-  // FavoritesModel? favoritesModel  ;
-
-  // void getFavorites(){
-  //   emit(ShopLoadingGetFavStates());
-  //
-  //   DioHelper.getData(url: favouritesUrl , token: token).then((value) {
-  //     favoritesModel = FavoritesModel.fromJson(value.data);
-  //
-  //     emit(ShopSuccessGetFavStates());
-  //   }).catchError((error){
-  //     //print(error.toString());
-  //     emit(ShopErrorGetFavStates());
-  //   });
-  // }
-  //
-  // ShopLoginModel? userModel  ;
-
-  // void getUserData(){
-  //   emit(ShopLoadingUserDataStates());
-  //
-  //   DioHelper.getData(url: profileUrl , token: token).then((value) {
-  //     userModel = ShopLoginModel.fromJson(value.data);
-  //
-  //     emit(ShopSuccessUserDataStates(userModel!));
-  //   }).catchError((error){
-  //     //print(error.toString());
-  //     emit(ShopErrorUserDataStates());
-  //   });
-  // }
-
-  // void updateUserData({required String name, required String email, required String phone,}){
-  //   emit(ShopLoadingUpdateUserStates());
-  //
-  //   DioHelper.putData(
-  //     url: updateProfileUrl ,
-  //     token: token,
-  //     data: {
-  //       'name':name,
-  //       'phone':phone,
-  //       'email':email
-  //     },
-  //   ).then((value) {
-  //     userModel = ShopLoginModel.fromJson(value.data);
-  //
-  //     emit(ShopSuccessUpdateUserStates(userModel!));
-  //   }).catchError((error){
-  //     //print(error.toString());
-  //     emit(ShopErrorUpdateUserStates());
-  //   });
-  // }
 }
