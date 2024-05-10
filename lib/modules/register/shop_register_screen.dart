@@ -87,10 +87,10 @@ class ShopRegisterScreen extends StatelessWidget {
                           type: TextInputType.emailAddress,
                           validate: (String value) {
                             if (value.isEmpty) {
-                              return 'Email address must not be empty';
+                              return 'Username must not be empty';
                             }
                           },
-                          label: 'Email Address',
+                          label: 'Username',
                           prefix: Icons.email_outlined,
                         ),
                         const SizedBox(

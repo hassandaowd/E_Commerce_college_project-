@@ -10,7 +10,8 @@ import 'package:e_commerce_app/shared/components/components.dart';
 import 'package:e_commerce_app/shared/styles/colors.dart';
 
 class ProductsOfBrandsScreen extends StatelessWidget {
-  const ProductsOfBrandsScreen({super.key});
+  final title ;
+  const ProductsOfBrandsScreen({super.key, this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,9 @@ class ProductsOfBrandsScreen extends StatelessWidget {
       builder: (context, state) {
         bool b = (cubit.productOfBrands!.landingProduct!.length == 1);
         return Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            title: Text(title,),
+          ),
           body: ConditionalBuilder(
             condition: cubit.productOfBrands != null,
             builder: (context) => builder(cubit.productOfBrands! ,context,b ),

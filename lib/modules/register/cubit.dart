@@ -41,6 +41,8 @@ class ShopRegisterCubit extends Cubit<ShopRegisterStates>{
 
       emit(ShopRegisterSuccessState(registerModel));
     }).catchError((error){
+      emit(ShopRegisterErrorState(error));
+
       if (kDebugMode) {
         print(error.toString());
       }

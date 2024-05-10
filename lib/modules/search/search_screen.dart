@@ -16,14 +16,15 @@ class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var cubit = ShopCubit.get(context);
     return BlocConsumer<ShopCubit, ShopStates>(
+
       listener: (context, state) {
         if (state is ShopSuccessProductBrandsStates) {
-          navigateTo(context, const ProductsOfBrandsScreen());
+          navigateTo(context, ProductsOfBrandsScreen(title: cubit.productOfBrands!.landingProduct![0].title,));
         }
       },
       builder: (context, state) {
-        var cubit = ShopCubit.get(context);
 
         return Scaffold(
             appBar: AppBar(

@@ -296,5 +296,5 @@ Color chooseToastColor(ToastState state){
 String? extractUrls(String text) {
   RegExp regExp = RegExp(r'https://[^\s]+\.jpg');
   List<String?> urls = regExp.allMatches(text).map((match) => match.group(0)).toList();
-  //print(text);
+  //print(urls);
   return urls.isNotEmpty ? urls.first : 'https://gebelesebeti.ge/front/asset/img/default-product.png';}

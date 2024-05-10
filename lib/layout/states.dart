@@ -6,7 +6,8 @@ class ShopInitialState extends ShopStates {}
 /// Bottom Nav States
 
 class ShopChangeBottomNavState extends ShopStates{}
-
+class ShopChangeDrawerLState extends ShopStates{}
+class ShopChangeDrawerState extends ShopStates{}
 /// Home States
 
 class ShopLoadingHomeDataStates extends ShopStates{}

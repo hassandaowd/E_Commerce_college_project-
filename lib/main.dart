@@ -1,5 +1,8 @@
 //import 'package:bloc/bloc.dart';
+import 'package:e_commerce_app/layout/full_app_view.dart';
 import 'package:e_commerce_app/modules/intro.dart';
+import 'package:e_commerce_app/platforms/dashboard_layout.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'layout/cubit.dart';
@@ -23,18 +26,20 @@ void main() async{
   Widget? widget;
   bool? onBoarding = CacheHelper.getData(key: 'onBoarding');
   token = CacheHelper.getData(key: 'token') ?? '';
+  adminWidget = const DashboardDetails();
 
-  if(onBoarding != null){
+  if(kIsWeb){
+    onBoarding = true;
+    widget = ShopLoginScreen();
+  }
+
     if(token != '') {
-      widget = const ShopLayoutScreen();
+      widget = const FullView();
     }
     else {
       widget = ShopLoginScreen();
     }
-  }
-  else {
-    widget = const OnBoardingScreen();
-  }
+
 
   runApp(  MyApp(startWidget: widget ,));
 }

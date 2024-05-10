@@ -42,6 +42,17 @@ class ShopCubit extends Cubit<ShopStates> {
     }
   }
 
+  int drawerIndex =0;
+
+  void changeDrawerIndex(int index) {
+    emit(ShopChangeDrawerLState());
+
+    drawerIndex = index;
+    print(drawerIndex);
+    emit(ShopChangeDrawerState());
+  }
+
+
   LandingModel? landingProduct;
 
   void getHomeData() {

@@ -15,7 +15,7 @@ class BrandsScreen extends StatelessWidget {
     return BlocConsumer<ShopCubit, ShopStates>(
       listener: (context, state) {
         if (state is ShopSuccessProductBrandsStates) {
-          navigateTo(context, const ProductsOfBrandsScreen());
+          navigateTo(context, ProductsOfBrandsScreen(title: cubit.productOfBrands!.landingProduct![0].title,));
         }
       },
       builder: (context, state) {

@@ -1,6 +1,8 @@
+import 'package:e_commerce_app/platforms/dashboard_layout.dart';
 import 'package:flutter/foundation.dart';
 import 'package:e_commerce_app/modules/login/shop_login.dart';
 import 'package:e_commerce_app/shared/network/local/cache_helper.dart';
+import 'package:flutter/material.dart';
 
 import 'components.dart';
 
@@ -20,5 +22,6 @@ void printFullText(String text){
 }
 
 String token ='';
+Widget adminWidget =  const DashboardDetails();
 
 //String localhost ='192.168.1.11';
