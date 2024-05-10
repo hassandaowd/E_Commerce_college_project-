@@ -2,6 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:e_commerce_app/models/landing.dart';
 import 'package:e_commerce_app/modules/intro.dart';
 import 'package:e_commerce_app/modules/product_details/product_details.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:e_commerce_app/layout/cubit.dart';
@@ -54,14 +55,14 @@ class ProductsOfBrandsScreen extends StatelessWidget {
     child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Container(
-        color: b ? Colors.white :Colors.grey[300],
+        color: kIsWeb ? Colors.grey[300] :(b ? Colors.white :Colors.grey[300]),
         child: GridView.count(
           mainAxisSpacing: 1,
           crossAxisSpacing: 1,
           childAspectRatio: 1 / 1.77,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: 2,
+          crossAxisCount: kIsWeb ? 4 : 2,
           children: List.generate(
             model.landingProduct!.length,
                 (index) =>

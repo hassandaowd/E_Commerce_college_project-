@@ -1,4 +1,5 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:e_commerce_app/layout/full_app_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +34,8 @@ class ShopLoginScreen extends StatelessWidget {
                   msg: 'Login Successfully',
                   state: ToastState.success,
                 );
-                navigateToFinish(context, const ShopLayoutScreen());
+
+                navigateToFinish(context, const FullView());
               });
               
                 //print('Token is : ${state.loginModel.data?.token}');
@@ -62,7 +64,7 @@ class ShopLoginScreen extends StatelessWidget {
                   image: AssetImage(
                     'assets/images/shoe.jpg',
                   ),
-                  fit: BoxFit.fill,
+                  fit: BoxFit.cover,
                 ),
               ),
               Expanded(

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 
 class DioHelper {
   static late Dio dio ;
-  static String url ='http://192.168.43.250/commerce/ecommerce.php';
+  static String url ='http://192.168.1.5/commerce/ecommerce.php';
 
   static init()async{
     dio = Dio(

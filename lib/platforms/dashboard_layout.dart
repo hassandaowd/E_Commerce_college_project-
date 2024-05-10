@@ -9,25 +9,11 @@ class DashboardDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       children: [
-        const Expanded(
+        Expanded(
           child: ProductsScreen(),
         ),
-        Container(
-          width: 4,
-          height: MediaQuery.sizeOf(context).height,
-          color: Colors.white,
-        ),
-        // const Expanded(
-        //   child: Column(
-        //     mainAxisAlignment: MainAxisAlignment.start,
-        //     crossAxisAlignment: CrossAxisAlignment.center,
-        //     children: [
-        //       AutomatedScreen(),
-        //     ],
-        //   ),
-        // ),
       ],
     );
   }

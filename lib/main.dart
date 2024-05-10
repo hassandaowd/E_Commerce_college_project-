@@ -24,14 +24,14 @@ void main() async{
   DioHelper.init();
   await CacheHelper.init();
   Widget? widget;
-  bool? onBoarding = CacheHelper.getData(key: 'onBoarding');
+  //bool? onBoarding = CacheHelper.getData(key: 'onBoarding');
   token = CacheHelper.getData(key: 'token') ?? '';
   adminWidget = const DashboardDetails();
 
-  if(kIsWeb){
-    onBoarding = true;
-    widget = ShopLoginScreen();
-  }
+  // if(kIsWeb){
+  //   onBoarding = true;
+  //   widget = ShopLoginScreen();
+  // }
 
     if(token != '') {
       widget = const FullView();
