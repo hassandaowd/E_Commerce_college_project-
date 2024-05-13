@@ -32,7 +32,7 @@ class SearchScreen extends StatelessWidget {
             appBar: AppBar(
               leading: IconButton(
                   onPressed: () {
-                    //cubit.model!.search =[];
+                    cubit.setEmpty();
                     Navigator.pop(context);
                   },
                   icon: const Icon(Icons.arrow_back)),
