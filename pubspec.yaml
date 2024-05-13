@@ -53,6 +53,7 @@ dependencies:
   fluttertoast: ^8.2.4
   carousel_slider: ^4.2.1
   flutter_svg: ^2.0.9
+  webview_flutter_web: ^0.2.2+4
 
 dev_dependencies:
   flutter_test:

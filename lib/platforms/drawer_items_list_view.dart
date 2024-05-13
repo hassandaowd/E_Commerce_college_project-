@@ -4,6 +4,7 @@ import 'package:e_commerce_app/models/drawer_item_model.dart';
 import 'package:e_commerce_app/modules/brands/brands_screen.dart';
 import 'package:e_commerce_app/modules/frauds/fraud_screen.dart';
 import 'package:e_commerce_app/modules/power_bi/power_bi_screen.dart';
+import 'package:e_commerce_app/modules/power_bi_frame/power_bi_frame.dart';
 import 'package:e_commerce_app/modules/users_state/search_user.dart';
 import 'package:e_commerce_app/platforms/drawer_item.dart';
 import 'package:e_commerce_app/platforms/utils/app_images.dart';
@@ -33,6 +34,8 @@ class _DrawerItemsListViewState extends State<DrawerItemsListView> {
     const DrawerItemModel(title: 'Power BI', image: Assets.imagesStatistics),
     const DrawerItemModel(title: 'Brands', image: Assets.imagesWalletAccount),
     const DrawerItemModel(title: 'Users', image: Assets.imagesDashboard),
+    const DrawerItemModel(title: 'Power BI Frame', image: Assets.imagesStatistics),
+
     //const DrawerItemModel(title: 'Search in users', image: Assets.imagesSearch),
     //const DrawerItemModel(title: 'Users', image: Assets.imagesAvatar1),
     // const DrawerItemModel(
@@ -44,7 +47,9 @@ class _DrawerItemsListViewState extends State<DrawerItemsListView> {
     const FraudScreen(),
     const PowerBiScreen(),
     const BrandsScreen(),
-     UsersDataScreen(),
+    const UsersDataScreen(),
+    PowerBiFrameScreen(),
+
     //UserSearchScreen(),
   ];
 

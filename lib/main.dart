@@ -1,7 +1,10 @@
 import 'package:e_commerce_app/layout/full_app_view.dart';
 import 'package:e_commerce_app/platforms/dashboard_layout.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
+import 'package:webview_flutter_web/webview_flutter_web.dart';
 import 'layout/cubit.dart';
 import 'layout/states.dart';
 import 'modules/login/shop_login.dart';
@@ -18,14 +21,12 @@ void main() async{
   DioHelper.init();
   await CacheHelper.init();
   Widget? widget;
-  //bool? onBoarding = CacheHelper.getData(key: 'onBoarding');
   token = CacheHelper.getData(key: 'token') ?? '';
   adminWidget = const DashboardDetails();
 
-  // if(kIsWeb){
-  //   onBoarding = true;
-  //   widget = ShopLoginScreen();
-  // }
+  if(kIsWeb){
+    WebViewPlatform.instance = WebWebViewPlatform();
+  }
 
     if(token != '') {
       widget = const FullView();
