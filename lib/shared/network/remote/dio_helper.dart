@@ -1,8 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 class DioHelper {
   static late Dio dio ;
-  static String url ='http://192.168.1.5/commerce/ecommerce.php';
+  static String url =kIsWeb
+      ? 'http://localhost/abok/ecommerce-work.php'
+      :'http://172.20.10.2/abok/ecommerce-work.php';
 
   static init()async{
     dio = Dio(

@@ -1,5 +1,5 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:e_commerce_app/models/landing.dart';
+import 'package:e_commerce_app/models/fraud_product_model.dart';
 import 'package:e_commerce_app/modules/product_details/product_details.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -17,16 +17,12 @@ class FraudScreen extends StatelessWidget {
     var cubit = ShopCubit.get(context);
 
     return BlocConsumer<ShopCubit, ShopStates>(
-      listener: (context, state) {
-        if (state is ShopSuccessProductDataStates) {
-          navigateTo(context, const ProductDetails());
-        }
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         return ConditionalBuilder(
-          condition: false,//cubit.landingProduct != null,
-          builder: (context) => builder(cubit.landingProduct!, context),
-          fallback: (context) => (state is! ShopErrorHomeDataStates &&
+          condition: cubit.fraudulentProductsModel != null,
+          builder: (context) => builder(cubit.fraudulentProductsModel!, context),
+          fallback: (context) => (state is! ShopErrorFraudStates &&
                   state is! GetBrandErrorState &&
                   state is! ShopChangeBottomNavState &&
                   state is! SearchInitialState)
@@ -48,7 +44,7 @@ class FraudScreen extends StatelessWidget {
     );
   }
 
-  Widget builder(LandingModel model, context) => Padding(
+  Widget builder(FraudulentProductsModel model, context) => Padding(
     padding: const EdgeInsets.only(right: 20.0),
     child: SingleChildScrollView(
           child: kIsWeb ?
@@ -62,9 +58,9 @@ class FraudScreen extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               crossAxisCount: 4,
               children: List.generate(
-                model.landingProduct!.length,
+                model.fraudulentProducts!.length,
                     (index) =>
-                    buildGridProduct(model.landingProduct![index], context),
+                    buildGridProduct(model.fraudulentProducts![index], context),
               ),
             ),
           ) :Container(
@@ -77,60 +73,55 @@ class FraudScreen extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               crossAxisCount: 2,
               children: List.generate(
-                model.landingProduct!.length,
+                model.fraudulentProducts!.length,
                 (index) =>
-                    buildGridProduct(model.landingProduct![index], context),
+                    buildGridProduct(model.fraudulentProducts![index], context),
               ),
             ),
           ),
         ),
   );
 
-  Widget buildGridProduct(LandingProduct model, BuildContext context) =>
-      InkWell(
-        onTap: () {
-          ShopCubit.get(context).getProductData(asin: model.asin!);
-        },
-        child: Container(
-          color: Colors.white,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                alignment: AlignmentDirectional.bottomStart,
+  Widget buildGridProduct(FraudulentProduct model, BuildContext context) =>
+      Container(
+        color: Colors.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              alignment: AlignmentDirectional.bottomStart,
+              children: [
+                image(extractUrls(model.imageUrLs![0])),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
                 children: [
-                  image(extractUrls(model.imageUrLs![0])),
+                  Text(
+                    model.title!,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      height: 1.3,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        model.price ?? 'not available',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: defaultColor,
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  children: [
-                    Text(
-                      model.title!,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        height: 1.3,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          model.price ?? 'not available',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: defaultColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
 

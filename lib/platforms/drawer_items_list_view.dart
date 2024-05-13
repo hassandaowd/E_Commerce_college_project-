@@ -4,6 +4,7 @@ import 'package:e_commerce_app/models/drawer_item_model.dart';
 import 'package:e_commerce_app/modules/brands/brands_screen.dart';
 import 'package:e_commerce_app/modules/frauds/fraud_screen.dart';
 import 'package:e_commerce_app/modules/power_bi/power_bi_screen.dart';
+import 'package:e_commerce_app/modules/users_state/search_user.dart';
 import 'package:e_commerce_app/platforms/drawer_item.dart';
 import 'package:e_commerce_app/platforms/utils/app_images.dart';
 import 'package:e_commerce_app/shared/components/constants.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
+import '../modules/users_state/users_data.dart';
 import 'dashboard_layout.dart';
 
 class DrawerItemsListView extends StatefulWidget {
@@ -30,7 +32,9 @@ class _DrawerItemsListViewState extends State<DrawerItemsListView> {
     const DrawerItemModel(title: 'Fraud Product', image: Assets.imagesMyTransctions),
     const DrawerItemModel(title: 'Power BI', image: Assets.imagesStatistics),
     const DrawerItemModel(title: 'Brands', image: Assets.imagesWalletAccount),
-    //const DrawerItemModel(title: 'Setting system', image: Assets.imagesSettings),
+    const DrawerItemModel(title: 'Users', image: Assets.imagesDashboard),
+    //const DrawerItemModel(title: 'Search in users', image: Assets.imagesSearch),
+    //const DrawerItemModel(title: 'Users', image: Assets.imagesAvatar1),
     // const DrawerItemModel(
     //     title: 'My Investments', image: Assets.imagesMyInvestments),
   ];
@@ -40,7 +44,8 @@ class _DrawerItemsListViewState extends State<DrawerItemsListView> {
     const FraudScreen(),
     const PowerBiScreen(),
     const BrandsScreen(),
-
+     UsersDataScreen(),
+    //UserSearchScreen(),
   ];
 
   int currentIndex =0;

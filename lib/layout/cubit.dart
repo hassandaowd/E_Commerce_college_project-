@@ -1,9 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:e_commerce_app/layout/states.dart';
 import 'package:e_commerce_app/models/add_product_model.dart';
+import 'package:e_commerce_app/models/default_user_by_admin.dart';
+import 'package:e_commerce_app/models/fraud_product_model.dart';
 import 'package:e_commerce_app/models/landing.dart';
+import 'package:e_commerce_app/models/power_bi.dart';
 import 'package:e_commerce_app/models/product_details_model.dart';
 import 'package:e_commerce_app/models/search_model.dart';
+import 'package:e_commerce_app/models/users_search.dart';
 import 'package:e_commerce_app/modules/brands/brands_screen.dart';
 import 'package:e_commerce_app/modules/my_chart/my_chart_screen.dart';
 import 'package:e_commerce_app/modules/new_product/add_product.dart';
@@ -16,6 +20,9 @@ import 'package:e_commerce_app/shared/network/remote/dio_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../models/user_detection_model.dart';
+import '../modules/users_state/search_user.dart';
 
 class ShopCubit extends Cubit<ShopStates> {
   ShopCubit() : super(ShopInitialState());
@@ -46,10 +53,27 @@ class ShopCubit extends Cubit<ShopStates> {
 
   void changeDrawerIndex(int index) {
     emit(ShopChangeDrawerLState());
-
     drawerIndex = index;
-    print(drawerIndex);
-    emit(ShopChangeDrawerState());
+    if(index != 5){
+    if (kDebugMode) {
+      print(drawerIndex);
+    }
+    emit(ShopChangeDrawerState());}
+    else{
+      emit(SearchInitialState());
+    }
+  }
+
+
+  void getAllData(){
+    getHomeData();
+    getBrands();
+    if(kIsWeb){
+      getFraudData();
+      //powerBiImages();
+      if(token !='')
+      getUsersDefault();
+    }
   }
 
 
@@ -60,7 +84,7 @@ class ShopCubit extends Cubit<ShopStates> {
 
     DioHelper.getData(data: {'action': 'landing_page'}).then((value) {
       landingProduct = landingModelFromJson(value.data);
-      //print(landingProduct!.toJson());
+      //print(value.data);
       emit(ShopSuccessHomeDataStates());
     }).catchError((error) {
       if (kDebugMode) {
@@ -77,13 +101,32 @@ class ShopCubit extends Cubit<ShopStates> {
 
     DioHelper.getData(data: {'action': 'product', 'asin': asin}).then((value) {
       productDetailModel = productDetailModelFromJson(value.data);
-      print(value.data);
+      if (kDebugMode) {
+        print(value.data);
+      }
       emit(ShopSuccessProductDataStates());
     }).catchError((error) {
       if (kDebugMode) {
         print(error.toString());
       }
       emit(ShopErrorProductDataStates());
+    });
+  }
+
+  FraudulentProductsModel? fraudulentProductsModel;
+
+  void getFraudData() {
+    emit(ShopLoadingFraudStates());
+
+    DioHelper.getData(data: {'action': 'admin_fraud_products'}).then((value) {
+      fraudulentProductsModel = fraudulentProductsModelFromJson(value.data);
+      //print(value.data);
+      emit(ShopSuccessFraudStates());
+    }).catchError((error) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+      emit(ShopErrorFraudStates());
     });
   }
 
@@ -120,7 +163,9 @@ class ShopCubit extends Cubit<ShopStates> {
       'industry': industry
     })).then((value) {
       addProductModel = addProductModelFromJson(value.data);
-      print(value.data);
+      if (kDebugMode) {
+        print(value.data);
+      }
       emit(ShopSuccessAddProductStates());
     }).catchError((error) {
       if (kDebugMode) {
@@ -130,13 +175,19 @@ class ShopCubit extends Cubit<ShopStates> {
     });
   }
 
-  SearchModel? model ;
+  SearchModel? model = SearchModel.fromJson({"search":[]});
 
+  void setEmpty(){
+    model = SearchModel.fromJson({"search":[]});
+    usersSearch = UsersSearch.fromJson({"search":[]});
+    emit(SearchBrandSuccessState());
+  }
   void goToSearch(context){
-    model = SearchModel();
+    setEmpty();
     navigateTo(context, SearchScreen());
     emit(SearchInitialState());
   }
+
   void search(String? search){
     emit(SearchBrandLoadingState());
 
@@ -145,14 +196,13 @@ class ShopCubit extends Cubit<ShopStates> {
       emit(SearchBrandSuccessState());
     }).catchError((error){
       //print(error.toString());
+      model!.search =[];
       emit(SearchBrandErrorState());
     });
   }
 
 
   SearchModel? brands ;
-
-
 
   void getBrands(){
     emit(GetBrandLoadingState());
@@ -200,8 +250,10 @@ class ShopCubit extends Cubit<ShopStates> {
   void newTransaction() {
     String products ='';
     for (var element in myChart) {
-      products = "$products,${element.brandId!}" ;
+      products = products == '' ? element.id!:"$products,${element.id!}" ;
     }
+    print(products);
+    print(token);
     emit(ShopLoadingTransactionStates());
     DioHelper.postData(formData: FormData.fromMap({
       'action': 'transaction',
@@ -209,12 +261,15 @@ class ShopCubit extends Cubit<ShopStates> {
       'DeviceID': 454,
       'DeviceType': 'Android',
       'IPAddress': 732758368.79972,
-      'Country': 'egypt',
-      'ProductIDs': products,
+      'Country': 'Japan',
+      'ProductIDs': '23267',
       'Browser': 'Mobile App',
+      'source': 'facebook',
     })).then((value) {
       //productDetailModel = productDetailModelFromJson(value.data);
-      print(value.data);
+      if (kDebugMode) {
+        print(value.data);
+      }
       successfulTransaction.add(myChart);
       myChart =[];
       emit(ShopSuccessTransactionStates());
@@ -225,6 +280,127 @@ class ShopCubit extends Cubit<ShopStates> {
       emit(ShopErrorTransactionStates());
     });
   }
+
+  GetUserDefault? getUserDefault;
+
+  void getUsersDefault() {
+
+    emit(ShopLoadingDefaultUserStates());
+    DioHelper.postData(formData: FormData.fromMap({
+      'action': 'admin_get_users',
+      'userid': token,
+    })).then((value) {
+      getUserDefault = getUserDefaultFromJson(value.data);
+      // if (kDebugMode) {
+      //   print(value.data);
+      // }
+      emit(ShopSuccessDefaultUserStates());
+      rowDataTable();
+    }).catchError((error) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+      emit(ShopErrorDefaultUserStates());
+    });
+  }
+  List<DataRow> rowTable = <DataRow>[];
+  List<User> user =[];
+
+  void rowDataTable(){
+    rowTable = <DataRow>[];
+    for(var element in getUserDefault!.users!){
+      user.add(element);
+      rowTable.add(DataRow(
+        cells: <DataCell>[
+          DataCell(Text(element.id!)),
+          DataCell(Text(element.username!)),
+          DataCell(Text(element.sex!.name=='M' ?'Male':'Female')),
+          DataCell(Text(element.age!)),
+        ],
+      ),
+      );
+    }
+  }
+
+  int? selectedIndex;
+  void changeSelectedIndex(index){
+
+  }
+
+  List<User> checkBots = [];
+  Map<String,String> detected = {};
+
+  void adminBotDetection(List<int> list) {
+    for(var element in list){
+      checkBots.add(user[element]);
+    }
+    String users ='';
+    for (var element in checkBots) {
+      users = users == '' ? element.id!:"$users,${element.id!}" ;
+    }
+    emit(ShopLoadingDetectionStates());
+    DioHelper.postData(formData: FormData.fromMap({
+      'action': 'admin_bot_detection',
+      'userids': users,
+    })).then((value) {
+      detected = userDetectedModelFromJson(value.data);
+      if (kDebugMode) {
+        print(value.data);
+      }
+      emit(ShopSuccessDetectionStates());
+    }).catchError((error) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+      emit(ShopErrorDetectionStates());
+    });
+  }
+
+  UsersSearch? usersSearch = UsersSearch.fromJson({"search":[]});
+
+  void goToUserSearch(context){
+    setEmpty();
+    navigateTo(context, UserSearchScreen());
+    emit(SearchInitialState());
+  }
+  void adminUserAutocomplete({String? userSearch}) {
+    emit(ShopLoadingUserSearchStates());
+    DioHelper.postData(formData: FormData.fromMap({
+      'action': 'admin_user_autocomplete',
+      'searchTerm': userSearch,
+    })).then((value) {
+      usersSearch = usersSearchFromJson(value.data);
+      if (kDebugMode) {
+        print(value.data);
+      }
+      emit(ShopSuccessUserSearchStates());
+    }).catchError((error) {
+      if (kDebugMode) {
+        print(error.toString());
+      }
+      emit(ShopErrorUserSearchStates());
+    });
+  }
+
+  // PowerBi? powerBi;
+  //
+  // void powerBiImages() {
+  //   emit(ShopLoadingPowerBIStates());
+  //   DioHelper.postData(formData: FormData.fromMap({
+  //     'action': 'admin_powerBI',
+  //   })).then((value) {
+  //     powerBi = powerBiFromJson(value.data);
+  //     if (kDebugMode) {
+  //       print(value.data);
+  //     }
+  //     emit(ShopSuccessPowerBIStates());
+  //   }).catchError((error) {
+  //     if (kDebugMode) {
+  //       print(error.toString());
+  //     }
+  //     emit(ShopErrorPowerBIStates());
+  //   });
+  // }
 
   int currentStep = 0;
 
@@ -247,4 +423,17 @@ class ShopCubit extends Cubit<ShopStates> {
     }
   }
 
+
+  List<String> imagesBI=[
+    //'assets/images/onboard_1.jpg',
+    "assets/powerBi/Page1.png",
+    "assets/powerBi/Page2.png",
+    "assets/powerBi/Page3.png",
+    "assets/powerBi/Page4.png",
+    "assets/powerBi/Page5.png"
+  ] ;
+
 }
+
+
+

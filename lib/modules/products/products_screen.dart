@@ -21,6 +21,9 @@ class ProductsScreen extends StatelessWidget {
         if (state is ShopSuccessProductDataStates) {
           navigateTo(context, const ProductDetails());
         }
+        else if (state is ShopErrorProductDataStates) {
+          toast(msg: 'Connection Error', state: ToastState.error);
+        }
       },
       builder: (context, state) {
         return ConditionalBuilder(

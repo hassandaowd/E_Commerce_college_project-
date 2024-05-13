@@ -24,3 +24,7 @@ class ShopRegisterContinueState extends ShopRegisterStates{}
 class ShopRegisterCancelState extends ShopRegisterStates{}
 
 class ShopRegisterChangeStepState extends ShopRegisterStates{}
+
+
+
+class ShopRegisterGenderState extends ShopRegisterStates{}

@@ -16,6 +16,14 @@ class ShopSuccessHomeDataStates extends ShopStates{}
 
 class ShopErrorHomeDataStates extends ShopStates{}
 
+/// Fraud data States
+
+class ShopLoadingFraudStates extends ShopStates{}
+
+class ShopSuccessFraudStates extends ShopStates{}
+
+class ShopErrorFraudStates extends ShopStates{}
+
 /// Home States
 
 class ShopLoadingProductDataStates extends ShopStates{}
@@ -85,7 +93,7 @@ class ShopErrorTransactionStates extends ShopStates{}
 
 
 
-
+/// search
 class SearchInitialState extends ShopStates{}
 
 class SearchLoadingState extends ShopStates{}
@@ -93,4 +101,36 @@ class SearchLoadingState extends ShopStates{}
 class SearchSuccessState extends ShopStates{}
 
 class SearchErrorState extends ShopStates{}
-//
+
+
+/// default user by admin
+
+class ShopLoadingDefaultUserStates extends ShopStates{}
+
+class ShopSuccessDefaultUserStates extends ShopStates{}
+
+class ShopErrorDefaultUserStates extends ShopStates{}
+
+/// admin bot detection
+
+class ShopLoadingDetectionStates extends ShopStates{}
+
+class ShopSuccessDetectionStates extends ShopStates{}
+
+class ShopErrorDetectionStates extends ShopStates{}
+
+/// admin search user
+
+class ShopLoadingUserSearchStates extends ShopStates{}
+
+class ShopSuccessUserSearchStates extends ShopStates{}
+
+class ShopErrorUserSearchStates extends ShopStates{}
+
+/// Power Bi
+
+class ShopLoadingPowerBIStates extends ShopStates{}
+
+class ShopSuccessPowerBIStates extends ShopStates{}
+
+class ShopErrorPowerBIStates extends ShopStates{}

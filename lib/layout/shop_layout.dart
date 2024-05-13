@@ -1,9 +1,9 @@
+import 'package:e_commerce_app/shared/components/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:e_commerce_app/layout/cubit.dart';
 import 'package:e_commerce_app/layout/states.dart';
-import 'package:e_commerce_app/modules/search/search_screen.dart';
-import 'package:e_commerce_app/shared/components/components.dart';
+
 
 class ShopLayoutScreen extends StatelessWidget {
   const ShopLayoutScreen({super.key});
@@ -16,6 +16,12 @@ class ShopLayoutScreen extends StatelessWidget {
         var cubit = ShopCubit.get(context);
 
         return Scaffold(
+          drawer: Drawer(child: Column(
+            mainAxisAlignment:MainAxisAlignment.center,
+            children: [
+
+            TextButton(onPressed: (){logOut(context);}, child: Text('Logout'))
+          ],),),
           appBar: AppBar(
             title: const Text('ShoeShack'),
             actions: [

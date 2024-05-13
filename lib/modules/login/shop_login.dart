@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:e_commerce_app/layout/cubit.dart';
-import 'package:e_commerce_app/layout/shop_layout.dart';
 import 'package:e_commerce_app/modules/login/cubit.dart';
 import 'package:e_commerce_app/modules/login/states.dart';
 import 'package:e_commerce_app/modules/register/shop_register_screen.dart';
@@ -34,7 +33,7 @@ class ShopLoginScreen extends StatelessWidget {
                   msg: 'Login Successfully',
                   state: ToastState.success,
                 );
-
+                ShopCubit.get(context).getUsersDefault();
                 navigateToFinish(context, const FullView());
               });
               

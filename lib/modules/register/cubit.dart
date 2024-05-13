@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:e_commerce_app/models/shop_app_register.dart';
-import 'package:e_commerce_app/shared/components/constants.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +13,13 @@ class ShopRegisterCubit extends Cubit<ShopRegisterStates>{
   //int currentStep = 0;
   static ShopRegisterCubit get(context) => BlocProvider.of(context);
 
-  void userRegister({required String username , required String password  }){
+  String? gender;
+  void changeGender(String value){
+    gender = value;
+    emit(ShopRegisterGenderState());
+  }
+
+  void userRegister({required String username , required String password ,required String age , required String sex }){
     emit(ShopRegisterLoadingState());
     //print(localhost);
     DioHelper.postData(
@@ -28,13 +33,8 @@ class ShopRegisterCubit extends Cubit<ShopRegisterStates>{
         "has_default_profile_img":"0",
         "is_geo_enabled":"0",
         "membership_subscription":"subscription",
-        "followers_count":"0",
-        "friends_count":"0",
-        "avg_purchases_per_day":"0",
-        "account_age":"1",
-        "prod_fav_count":"2",
-        "purchase_count":"1",
-        "purchase_date":"",
+        "sex":sex,
+        "age":age,
       }),
     ).then((value) {
       registerModel = shopRegisterModelFromJson(value.data);
@@ -57,23 +57,4 @@ class ShopRegisterCubit extends Cubit<ShopRegisterStates>{
     emit(ShopRegisterChangePasswordVisibilityState());
 
   }
-  // void changeCurrentStep(int step){
-  //   currentStep = step;
-  //   emit(ShopRegisterChangeStepState());
-  // }
-  // void continueCurrentStep([username , password]){
-  //   if(currentStep == 2){
-  //     userRegister(username: username, password: password);
-  //
-  //   }else {
-  //     currentStep++;
-  //     emit(ShopRegisterChangeStepState());
-  //   }
-  // }
-  // void cancelCurrentStep(){
-  //   if(currentStep !=0){
-  //     currentStep--;
-  //     emit(ShopRegisterChangeStepState());
-  //   }
-  // }
 }

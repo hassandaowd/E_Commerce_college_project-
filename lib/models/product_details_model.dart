@@ -9,6 +9,7 @@ ProductDetailModel productDetailModelFromJson(String str) => ProductDetailModel.
 String productDetailModelToJson(ProductDetailModel data) => json.encode(data.toJson());
 
 class ProductDetailModel {
+  String? id;
   String? title;
   String? asin;
   String? price;
@@ -21,6 +22,7 @@ class ProductDetailModel {
   String? imageUrl;
 
   ProductDetailModel({
+    this.id,
     this.title,
     this.asin,
     this.price,
@@ -34,6 +36,7 @@ class ProductDetailModel {
   });
 
   factory ProductDetailModel.fromJson(Map<String, dynamic> json) => ProductDetailModel(
+    id: json["ID"],
     title: json["Title"],
     asin: json["ASIN"],
     price: json["Price"],
@@ -47,6 +50,7 @@ class ProductDetailModel {
   );
 
   Map<String, dynamic> toJson() => {
+    "ID": id,
     "Title": title,
     "ASIN": asin,
     "Price": price,

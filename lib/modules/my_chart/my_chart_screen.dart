@@ -16,6 +16,9 @@ class MyChartScreen extends StatelessWidget {
         if(state is ShopSuccessTransactionStates){
           toast(msg: 'Successful Transaction', state: ToastState.success);
         }
+        else if(state is ShopErrorTransactionStates){
+          toast(msg: 'Transaction Failed', state: ToastState.error);
+        }
       },
       builder: (context, state) {
         if (cubit.myChart.isNotEmpty) {

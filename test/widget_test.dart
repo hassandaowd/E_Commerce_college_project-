@@ -6,7 +6,6 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:e_commerce_app/modules/login/shop_login.dart';
-import 'package:e_commerce_app/modules/on_boarding/on_board_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

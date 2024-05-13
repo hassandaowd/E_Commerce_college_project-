@@ -1,16 +1,10 @@
-//import 'package:bloc/bloc.dart';
 import 'package:e_commerce_app/layout/full_app_view.dart';
-import 'package:e_commerce_app/modules/intro.dart';
 import 'package:e_commerce_app/platforms/dashboard_layout.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'layout/cubit.dart';
-import 'layout/shop_layout.dart';
 import 'layout/states.dart';
-import 'modules/on_boarding/on_board_screen.dart';
 import 'modules/login/shop_login.dart';
-import 'modules/search/cubit.dart';
 import 'shared/bloc_observer.dart';
 import 'shared/components/constants.dart';
 import 'shared/styles/themes.dart';
@@ -52,7 +46,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => ShopCubit()..getHomeData()..getBrands()),
+        BlocProvider(create: (context) => ShopCubit()..getAllData()),
         //BlocProvider(create: (BuildContext context) => SearchCubit()),
       ],
       child: BlocConsumer<ShopCubit , ShopStates>(
@@ -70,3 +64,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+

@@ -17,6 +17,9 @@ class BrandsScreen extends StatelessWidget {
         if (state is ShopSuccessProductBrandsStates) {
           navigateTo(context, ProductsOfBrandsScreen(title: cubit.productOfBrands!.landingProduct![0].title,));
         }
+        else if(state is ShopErrorProductBrandsStates){
+          toast(msg: 'Connection Error', state: ToastState.error);
+        }
       },
       builder: (context, state) {
         return ConditionalBuilder(

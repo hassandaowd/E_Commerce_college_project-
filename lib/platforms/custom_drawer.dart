@@ -46,7 +46,7 @@ class CustomDrawer extends StatelessWidget {
                     height: 8,
                   ),
                 ),
-                DrawerItemsListView(),
+                const DrawerItemsListView(),
                 SliverFillRemaining(
                   hasScrollBody: false,
                   child: Column(

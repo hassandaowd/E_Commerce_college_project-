@@ -1,4 +1,5 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:e_commerce_app/layout/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -293,8 +294,106 @@ Color chooseToastColor(ToastState state){
 }
 
 
+void openDetectedSheet(BuildContext context) {
+  showModalBottomSheet(
+    enableDrag: false,
+    isDismissible: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15),),
+    ),
+    clipBehavior: Clip.antiAlias,
+    elevation: 20,
+    context: context,
+    builder: (BuildContext context) {
+      var cubit = ShopCubit.get(context);
+      var key = GlobalKey<FormState>();
+      return Form(
+        key: key,
+        child: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsetsDirectional.all(10),
+            color: Colors.white,
+            height: 700,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children:[
+                  ConditionalBuilder(
+                    condition: cubit.detected.isNotEmpty,
+                    builder: (context) => Expanded(
+                      child: ListView.separated(
+                        itemBuilder: (context, index) => detectedItem(cubit.detected[index],context),
+                        separatorBuilder: (context, index) => separateList(),
+                        itemCount: cubit.detected.length,
+                      ),
+                    ),
+                    fallback: (context)=>Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 40),
+                        child: Text('There is nothing to show',style: Theme.of(context).textTheme.titleMedium,),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
+Widget detectedItem( model ,context) => Container(
+  color: model.accountType!.name == 'bot' ? Colors.red:Colors.green,
+  child: Padding(
+    padding: const EdgeInsets.all(20.0),
+    child: SizedBox(
+      height: 20,
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              model.username!,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  height: 1.3,
+                  color: Colors.white
+              ),
+            ),
+          ),
+          Text(
+            model.accountType!.name,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                height: 1.3,
+                color: Colors.white
+            ),
+          ),
+        ],
+      ),
+    ),
+  ),
+);
+
+
+
 String? extractUrls(String text) {
   RegExp regExp = RegExp(r'https://[^\s]+\.jpg');
   List<String?> urls = regExp.allMatches(text).map((match) => match.group(0)).toList();
   //print(urls);
   return urls.isNotEmpty ? urls.first : 'https://gebelesebeti.ge/front/asset/img/default-product.png';}
+
+String? extractBI(String text) {
+  RegExp regExp = RegExp(r'http://[^\s]+\.png');
+  List<String?> urls = regExp.allMatches(text).map((match) => match.group(0)).toList();
+  //print(urls);
+  return urls.isNotEmpty ? urls.first : 'http://localhost/abok/images/Page1.png';}

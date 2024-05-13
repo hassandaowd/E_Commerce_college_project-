@@ -210,8 +210,59 @@ class AddProduct extends StatelessWidget {
         );
       },
     );
+
   }
 }
+
+Widget searchBrandWidget(context,brandNameController) =>Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    TextFormField(
+      controller: brandNameController,
+      keyboardType: TextInputType.text,
+      validator: (value) {
+        if (value!.isEmpty)
+          return 'enter brand name for search';
+        return null;
+      },
+      onFieldSubmitted: (value) {
+        //ShopCubit.get(context).search(value);
+      },
+      onChanged: (value) {
+        ShopCubit.get(context).search(value);
+      },
+      decoration: const InputDecoration(
+        label: Text('Search'),
+        prefixIcon: Icon(Icons.search),
+        border: OutlineInputBorder(),
+      ),
+    ),
+
+    SizedBox(height: 10),
+    if(ShopCubit.get(context).model!.search!.isNotEmpty)
+    Container(
+      decoration:BoxDecoration(
+        border: Border.all(),
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+      ),
+      height: 100,
+      child: ListView.builder(
+        itemCount: ShopCubit.get(context).model!.search!.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(ShopCubit.get(context).model!.search![index]),
+            onTap: () {
+              // Handle suggestion selection
+              brandNameController.text = ShopCubit.get(context).model!.search![index];
+              ShopCubit.get(context).setEmpty();
+
+            },
+          );
+        },
+      ),
+    ),
+  ],
+);
 
 Widget firstStep(
         {context,
@@ -242,11 +293,7 @@ Widget firstStep(
         const SizedBox(
           height: 10,
         ),
-        customField(
-          label: 'Brand Name',
-          prefix: Icons.branding_watermark_outlined,
-          controller: brandController,
-        ),
+        searchBrandWidget(context,brandController),
         const SizedBox(
           height: 10,
         ),
@@ -338,3 +385,6 @@ Widget customField(
       label: label,
       prefix: prefix,
     );
+
+
+

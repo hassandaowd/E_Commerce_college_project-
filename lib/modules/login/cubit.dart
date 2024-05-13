@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:e_commerce_app/models/shop_app_login.dart';
@@ -22,11 +23,16 @@ class ShopLoginCubit extends Cubit<ShopLoginStates>{
           "Password":password,
     })).then((value) {
       loginModel = shopLoginModelFromJson(value.data);
-      print(value.data);
+      if (kDebugMode) {
+        print(value.data);
+      }
       emit(ShopLoginSuccessState(loginModel));
     }).catchError((error){
-      print('login error #######################');
-      print(error.toString());
+      if (kDebugMode) {
+        print('login error #######################');
+        print(error.toString());
+
+      }
       emit(ShopLoginErrorState(error.toString()));
     });
   }

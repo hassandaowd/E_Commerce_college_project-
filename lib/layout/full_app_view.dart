@@ -1,4 +1,3 @@
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:e_commerce_app/layout/cubit.dart';
 import 'package:e_commerce_app/layout/shop_layout.dart';
 import 'package:e_commerce_app/layout/states.dart';

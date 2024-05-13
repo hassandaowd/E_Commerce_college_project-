@@ -1,6 +1,5 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:e_commerce_app/models/landing.dart';
-import 'package:e_commerce_app/modules/intro.dart';
 import 'package:e_commerce_app/modules/product_details/product_details.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +10,7 @@ import 'package:e_commerce_app/shared/components/components.dart';
 import 'package:e_commerce_app/shared/styles/colors.dart';
 
 class ProductsOfBrandsScreen extends StatelessWidget {
-  final title ;
+  final String? title ;
   const ProductsOfBrandsScreen({super.key, this.title});
 
   @override
@@ -23,12 +22,16 @@ class ProductsOfBrandsScreen extends StatelessWidget {
         if (state is ShopSuccessProductDataStates) {
           navigateTo(context, const ProductDetails());
         }
+        else if (state is ShopErrorProductDataStates) {
+          toast(msg: 'Connection Error', state: ToastState.error);
+        }
+
       },
       builder: (context, state) {
         bool b = (cubit.productOfBrands!.landingProduct!.length == 1);
         return Scaffold(
           appBar: AppBar(
-            title: Text(title,),
+            title: Text(title!,),
           ),
           body: ConditionalBuilder(
             condition: cubit.productOfBrands != null,
