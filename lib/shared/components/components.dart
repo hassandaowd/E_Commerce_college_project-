@@ -1,5 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:e_commerce_app/layout/cubit.dart';
+import 'package:e_commerce_app/models/user_detection_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -321,13 +322,52 @@ void openDetectedSheet(BuildContext context) {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children:[
+                  // const Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     Text(
+                  //       'ID',
+                  //       maxLines: 2,
+                  //       overflow: TextOverflow.ellipsis,
+                  //       style: TextStyle(
+                  //           fontSize: 20,
+                  //           fontWeight: FontWeight.bold,
+                  //           height: 1.3,
+                  //           color: Colors.white
+                  //       ),
+                  //     ),
+                  //     Text(
+                  //       'Username',
+                  //       maxLines: 2,
+                  //       overflow: TextOverflow.ellipsis,
+                  //       style: TextStyle(
+                  //           fontSize: 20,
+                  //           fontWeight: FontWeight.bold,
+                  //           height: 1.3,
+                  //           color: Colors.white
+                  //       ),
+                  //     ),
+                  //     Text(
+                  //       'Prediction',
+                  //       maxLines: 2,
+                  //       overflow: TextOverflow.ellipsis,
+                  //       style: TextStyle(
+                  //           fontSize: 20,
+                  //           fontWeight: FontWeight.bold,
+                  //           height: 1.3,
+                  //           color: Colors.white
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  // SizedBox(height: 10,),
                   ConditionalBuilder(
-                    condition: cubit.detected.isNotEmpty,
+                    condition: cubit.detected!.isNotEmpty,
                     builder: (context) => Expanded(
                       child: ListView.separated(
-                        itemBuilder: (context, index) => detectedItem(cubit.detected[index],context),
+                        itemBuilder: (context, index) => detectedItem(cubit.detected![index],context),
                         separatorBuilder: (context, index) => separateList(),
-                        itemCount: cubit.detected.length,
+                        itemCount: cubit.detected!.length,
                       ),
                     ),
                     fallback: (context)=>Center(
@@ -346,8 +386,8 @@ void openDetectedSheet(BuildContext context) {
     },
   );
 }
-Widget detectedItem( model ,context) => Container(
-  color: model.accountType!.name == 'bot' ? Colors.red:Colors.green,
+Widget detectedItem( UserDetectedModel model ,context) => Container(
+  color: model.prediction! == 'bot' ? Colors.red:Colors.green,
   child: Padding(
     padding: const EdgeInsets.all(20.0),
     child: SizedBox(
@@ -355,6 +395,21 @@ Widget detectedItem( model ,context) => Container(
       child: Row(
         children: [
           Expanded(
+            flex: 1,
+            child: Text(
+              model.userid!,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  height: 1.3,
+                  color: Colors.white
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
             child: Text(
               model.username!,
               maxLines: 2,
@@ -368,7 +423,7 @@ Widget detectedItem( model ,context) => Container(
             ),
           ),
           Text(
-            model.accountType!.name,
+            model.prediction!,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(

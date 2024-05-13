@@ -145,6 +145,16 @@ class ShopCubit extends Cubit<ShopStates> {
     String? location,
     String? industry
 }) {
+
+    /*
+    curl -X POST -d
+    "action=add_product&
+    title=product_titlea&
+    asin=omkkk&
+    price=100omk
+    &brand_name=brand_namea&category=Examplee Category&
+    product_details=details&feature_details=feature_details&malicious_url=www.amazon.com&image_url=image_url&location=location&has_company_logo=1&has_questions=1&industry=industry of omk" "http://localhost/abok/ecommerce-work.php"
+     */
     emit(ShopLoadingAddProductStates());
     DioHelper.postData(formData: FormData.fromMap({
       'action': 'add_product',
@@ -328,9 +338,10 @@ class ShopCubit extends Cubit<ShopStates> {
   }
 
   List<User> checkBots = [];
-  Map<String,String> detected = {};
+  List<UserDetectedModel>? detected ;
 
   void adminBotDetection(List<int> list) {
+    checkBots =[];
     for(var element in list){
       checkBots.add(user[element]);
     }

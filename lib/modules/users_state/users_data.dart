@@ -40,7 +40,11 @@ class _UsersDataScreenState extends State<UsersDataScreen> {
                     }, icon: const Icon(Icons.search)),
                 const SizedBox(width: 20,),
                 IconButton(
-                    onPressed: (){cubit.adminBotDetection(_selectedIndices.toList());}, icon: const Icon(Icons.check_box_outlined)),
+                    onPressed: (){
+                      cubit.adminBotDetection(_selectedIndices.toList());
+                      //_selectedIndices = Set<int>();
+
+                    }, icon: const Icon(Icons.check_box_outlined)),
               ],
             ),
             body: ConditionalBuilder(

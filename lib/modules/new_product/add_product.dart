@@ -57,14 +57,14 @@ class AddProduct extends StatelessWidget {
               state: ToastState.success,
             );
           } else if (cubit.addProductModel!.status == 'error') {
-            cubit.changeCurrentStep(0);
-            cubit.changeCurrentIndex(0, context);
-            navigateToFinish(context, const ShopLayoutScreen());
-
-            cubit.getHomeData();
-            makeTextEmpty();
+            // cubit.changeCurrentStep(0);
+            // cubit.changeCurrentIndex(0, context);
+            // navigateToFinish(context, const ShopLayoutScreen());
+            //
+            // cubit.getHomeData();
+            // makeTextEmpty();
             toast(
-              msg: cubit.addProductModel!.message!,
+              msg: '${cubit.addProductModel!.message!} ,${cubit.addProductModel!.url!.predictedType!} ',
               state: ToastState.error,
             );
           }
@@ -156,6 +156,10 @@ class AddProduct extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
+            leading: IconButton(onPressed: (){
+              makeTextEmpty();
+              Navigator.pop(context);
+            },icon: const Icon(Icons.arrow_back),),
             title: const Text('Add Product'),
           ),
           body: Column(

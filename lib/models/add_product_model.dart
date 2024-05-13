@@ -55,7 +55,7 @@ class ContentModeration {
 class Predictions {
   String? bestModel;
   String? bestModelPrediction;
-  int? confidence;
+  dynamic confidence;
 
   Predictions({
     this.bestModel,
