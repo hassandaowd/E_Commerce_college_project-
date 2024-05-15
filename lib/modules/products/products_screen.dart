@@ -15,7 +15,7 @@ class ProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = ShopCubit.get(context);
-
+    int crossItemCount = MediaQuery.of(context).size.width ~/250;
     return BlocConsumer<ShopCubit, ShopStates>(
       listener: (context, state) {
         if (state is ShopSuccessProductDataStates) {
@@ -28,7 +28,7 @@ class ProductsScreen extends StatelessWidget {
       builder: (context, state) {
         return ConditionalBuilder(
           condition: cubit.landingProduct != null,
-          builder: (context) => builder(cubit.landingProduct!, context),
+          builder: (context) => builder(cubit.landingProduct!, context ,crossItemCount),
           fallback: (context) => (state is! ShopErrorHomeDataStates &&
                   state is! GetBrandErrorState &&
                   state is! ShopChangeBottomNavState &&
@@ -55,7 +55,7 @@ class ProductsScreen extends StatelessWidget {
     );
   }
 
-  Widget builder(LandingModel model, context) => Padding(
+  Widget builder(LandingModel model, context ,int crossItemCount) => Padding(
     padding: const EdgeInsets.only(right: 20.0),
     child: SingleChildScrollView(
           child: kIsWeb ?
@@ -67,7 +67,7 @@ class ProductsScreen extends StatelessWidget {
               childAspectRatio: 1 / 1.5,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 4,
+              crossAxisCount: crossItemCount,
               children: List.generate(
                 model.landingProduct!.length,
                     (index) =>
@@ -103,37 +103,42 @@ class ProductsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Stack(
-                alignment: AlignmentDirectional.bottomStart,
-                children: [
-                  image(extractUrls(model.imageUrLs![0])),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
+              Expanded(
+                //flex: 1,
+                child: Stack(
+                  alignment: AlignmentDirectional.bottomStart,
                   children: [
-                    Text(
-                      model.title!,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        height: 1.3,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          model.price ?? 'not available',
-                          style: const TextStyle(
-                            fontSize: 12,
-                            color: defaultColor,
-                          ),
-                        ),
-                      ],
-                    ),
+                    image(extractUrls(model.imageUrLs![0])),
                   ],
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Column(
+                    children: [
+                      Text(
+                        model.title!,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          height: 1.3,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            model.price ?? 'not available',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: defaultColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

@@ -3,6 +3,7 @@ import 'package:e_commerce_app/models/fraud_product_model.dart';
 import 'package:e_commerce_app/modules/product_details/product_details.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:e_commerce_app/layout/cubit.dart';
 import 'package:e_commerce_app/layout/states.dart';
@@ -15,13 +16,14 @@ class FraudScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = ShopCubit.get(context);
+    int crossItemCount = MediaQuery.of(context).size.width ~/250;
 
     return BlocConsumer<ShopCubit, ShopStates>(
       listener: (context, state) {},
       builder: (context, state) {
         return ConditionalBuilder(
           condition: cubit.fraudulentProductsModel != null,
-          builder: (context) => builder(cubit.fraudulentProductsModel!, context),
+          builder: (context) => builder(cubit.fraudulentProductsModel!, context, crossItemCount),
           fallback: (context) => (state is! ShopErrorFraudStates &&
                   state is! GetBrandErrorState &&
                   state is! ShopChangeBottomNavState &&
@@ -44,7 +46,7 @@ class FraudScreen extends StatelessWidget {
     );
   }
 
-  Widget builder(FraudulentProductsModel model, context) => Padding(
+  Widget builder(FraudulentProductsModel model, context ,int crossItemCount) => Padding(
     padding: const EdgeInsets.only(right: 20.0),
     child: SingleChildScrollView(
           child: kIsWeb ?
@@ -56,7 +58,7 @@ class FraudScreen extends StatelessWidget {
               childAspectRatio: 1 / 1.5,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 4,
+              crossAxisCount: crossItemCount,
               children: List.generate(
                 model.fraudulentProducts!.length,
                     (index) =>
@@ -88,37 +90,41 @@ class FraudScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Stack(
-              alignment: AlignmentDirectional.bottomStart,
-              children: [
-                image(extractUrls(model.imageUrLs![0])),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
+            Expanded(
+              child: Stack(
+                alignment: AlignmentDirectional.bottomStart,
                 children: [
-                  Text(
-                    model.title!,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      height: 1.3,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        model.price ?? 'not available',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: defaultColor,
-                        ),
-                      ),
-                    ],
-                  ),
+                  image(extractUrls(model.imageUrLs![0])),
                 ],
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  children: [
+                    Text(
+                      model.title!,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        height: 1.3,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          model.price ?? 'not available',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: defaultColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
