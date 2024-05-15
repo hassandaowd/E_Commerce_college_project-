@@ -5,7 +5,6 @@ import 'package:e_commerce_app/modules/brands/brands_screen.dart';
 import 'package:e_commerce_app/modules/frauds/fraud_screen.dart';
 import 'package:e_commerce_app/modules/power_bi/power_bi_screen.dart';
 import 'package:e_commerce_app/modules/power_bi_frame/power_bi_frame.dart';
-import 'package:e_commerce_app/modules/users_state/search_user.dart';
 import 'package:e_commerce_app/platforms/drawer_item.dart';
 import 'package:e_commerce_app/platforms/utils/app_images.dart';
 import 'package:e_commerce_app/shared/components/constants.dart';
@@ -48,7 +47,7 @@ class _DrawerItemsListViewState extends State<DrawerItemsListView> {
     const PowerBiScreen(),
     const BrandsScreen(),
     const UsersDataScreen(),
-    PowerBiFrameScreen(),
+    const PowerBiFrameScreen(),
 
     //UserSearchScreen(),
   ];

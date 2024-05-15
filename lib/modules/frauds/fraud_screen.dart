@@ -1,9 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:e_commerce_app/models/fraud_product_model.dart';
-import 'package:e_commerce_app/modules/product_details/product_details.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:e_commerce_app/layout/cubit.dart';
 import 'package:e_commerce_app/layout/states.dart';

@@ -47,8 +47,9 @@ class SearchScreen extends StatelessWidget {
                       controller: searchController,
                       keyboardType: TextInputType.text,
                       validator: (value) {
-                        if (value!.isEmpty)
+                        if (value!.isEmpty) {
                           return 'enter brand name for search';
+                        }
                         return null;
                       },
                       onFieldSubmitted: (value) {

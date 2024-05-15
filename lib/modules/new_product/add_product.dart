@@ -225,8 +225,9 @@ Widget searchBrandWidget(context,brandNameController) =>Column(
       controller: brandNameController,
       keyboardType: TextInputType.text,
       validator: (value) {
-        if (value!.isEmpty)
+        if (value!.isEmpty) {
           return 'enter brand name for search';
+        }
         return null;
       },
       onFieldSubmitted: (value) {
@@ -236,18 +237,18 @@ Widget searchBrandWidget(context,brandNameController) =>Column(
         ShopCubit.get(context).search(value);
       },
       decoration: const InputDecoration(
-        label: Text('Search'),
+        label: Text('Brand Name'),
         prefixIcon: Icon(Icons.search),
         border: OutlineInputBorder(),
       ),
     ),
 
-    SizedBox(height: 10),
+    const SizedBox(height: 10),
     if(ShopCubit.get(context).model!.search!.isNotEmpty)
     Container(
       decoration:BoxDecoration(
         border: Border.all(),
-        borderRadius: BorderRadius.all(Radius.circular(5)),
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
       ),
       height: 100,
       child: ListView.builder(

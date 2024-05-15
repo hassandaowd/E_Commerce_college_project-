@@ -1,5 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:e_commerce_app/shared/components/components.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,7 +63,9 @@ class _UsersDataScreenState extends State<UsersDataScreen> {
                               setState(() {
                                 if (selected!) {
                                   _selectedIndices.add(index);
-                                  print(_selectedIndices.toList());
+                                  if (kDebugMode) {
+                                    print(_selectedIndices.toList());
+                                  }
                                 } else {
                                   _selectedIndices.remove(index);
                                 }

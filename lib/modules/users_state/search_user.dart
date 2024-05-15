@@ -2,7 +2,6 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:e_commerce_app/layout/cubit.dart';
 import 'package:e_commerce_app/layout/states.dart';
 import 'package:e_commerce_app/models/users_search.dart';
-import 'package:e_commerce_app/modules/product_of_brands/product_of_brands.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:e_commerce_app/shared/components/components.dart';
@@ -48,8 +47,9 @@ class UserSearchScreen extends StatelessWidget {
                       controller: searchController,
                       keyboardType: TextInputType.text,
                       validator: (value) {
-                        if (value!.isEmpty)
+                        if (value!.isEmpty) {
                           return 'enter user name for search';
+                        }
                         return null;
                       },
                       onFieldSubmitted: (value) {

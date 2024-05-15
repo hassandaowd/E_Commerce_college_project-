@@ -1,9 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:e_commerce_app/modules/login/shop_login.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:e_commerce_app/modules/register/cubit.dart';
 import 'package:e_commerce_app/modules/register/states.dart';
@@ -173,7 +171,9 @@ class ShopRegisterScreen extends StatelessWidget {
                                     onChanged: (String? value){
                                       cubit.changeGender(value!);
                                       selectOption = cubit.gender!;
-                                      print(selectOption);
+                                      if (kDebugMode) {
+                                        print(selectOption);
+                                      }
                                     },
                                   ),
                                   const SizedBox(width: 20,),
@@ -184,7 +184,9 @@ class ShopRegisterScreen extends StatelessWidget {
                                     onChanged: (String? value){
                                       cubit.changeGender(value!);
                                       selectOption = cubit.gender!;
-                                      print(selectOption);
+                                      if (kDebugMode) {
+                                        print(selectOption);
+                                      }
                                     },
                                   ),
                                 ],
@@ -333,7 +335,9 @@ class ShopRegisterScreen extends StatelessWidget {
                               onChanged: (String? value){
                                 cubit.changeGender(value!);
                                 selectOption = cubit.gender!;
-                                print(selectOption);
+                                if (kDebugMode) {
+                                  print(selectOption);
+                                }
                               },
                             ),
                             const SizedBox(width: 20,),
@@ -344,7 +348,9 @@ class ShopRegisterScreen extends StatelessWidget {
                               onChanged: (String? value){
                                 cubit.changeGender(value!);
                                 selectOption = cubit.gender!;
-                                print(selectOption);
+                                if (kDebugMode) {
+                                  print(selectOption);
+                                }
                               },
                             ),
                           ],

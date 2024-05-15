@@ -4,7 +4,6 @@ import 'package:e_commerce_app/models/add_product_model.dart';
 import 'package:e_commerce_app/models/default_user_by_admin.dart';
 import 'package:e_commerce_app/models/fraud_product_model.dart';
 import 'package:e_commerce_app/models/landing.dart';
-import 'package:e_commerce_app/models/power_bi.dart';
 import 'package:e_commerce_app/models/product_details_model.dart';
 import 'package:e_commerce_app/models/search_model.dart';
 import 'package:e_commerce_app/models/users_search.dart';
@@ -71,8 +70,9 @@ class ShopCubit extends Cubit<ShopStates> {
     if(kIsWeb){
       getFraudData();
       //powerBiImages();
-      if(token !='')
-      getUsersDefault();
+      if(token !='') {
+        getUsersDefault();
+      }
     }
   }
 
@@ -262,8 +262,10 @@ class ShopCubit extends Cubit<ShopStates> {
     for (var element in myChart) {
       products = products == '' ? element.id!:"$products,${element.id!}" ;
     }
-    print(products);
-    print(token);
+    if (kDebugMode) {
+      print(products);
+      print(token);
+    }
     emit(ShopLoadingTransactionStates());
     DioHelper.postData(formData: FormData.fromMap({
       'action': 'transaction',

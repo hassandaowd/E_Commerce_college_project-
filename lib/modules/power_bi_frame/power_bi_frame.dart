@@ -5,7 +5,7 @@ import 'package:e_commerce_app/layout/states.dart';
 import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 
 class PowerBiFrameScreen extends StatefulWidget {
-  PowerBiFrameScreen({super.key});
+  const PowerBiFrameScreen({super.key});
 
   @override
   State<PowerBiFrameScreen> createState() => _PowerBiFrameScreenState();
@@ -32,7 +32,7 @@ class _PowerBiFrameScreenState extends State<PowerBiFrameScreen> {
         ),
       ),
     );
-    var cubit = ShopCubit.get(context);
+    //var cubit = ShopCubit.get(context);
     return BlocConsumer<ShopCubit, ShopStates>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -50,7 +50,7 @@ class _PowerBiFrameScreenState extends State<PowerBiFrameScreen> {
                           currentIndex = 0;
                         });
                       },
-                      child: Text('1')),
+                      child: const Text('1')),
                 ),
                 const SizedBox(
                   width: 10,
@@ -63,7 +63,7 @@ class _PowerBiFrameScreenState extends State<PowerBiFrameScreen> {
                           currentIndex = 1;
                         });
                       },
-                      child: Text('2')),
+                      child: const Text('2')),
                 ),
                 const SizedBox(
                   width: 10,
@@ -77,7 +77,7 @@ class _PowerBiFrameScreenState extends State<PowerBiFrameScreen> {
                           currentIndex = 2;
                         });
                       },
-                      child: Text('3')),
+                      child: const Text('3')),
                 ),
                 const SizedBox(
                   width: 10,
@@ -90,7 +90,7 @@ class _PowerBiFrameScreenState extends State<PowerBiFrameScreen> {
                           currentIndex = 3;
                         });
                       },
-                      child: Text('4')),
+                      child: const Text('4')),
                 ),
                 const SizedBox(
                   width: 10,
@@ -103,7 +103,7 @@ class _PowerBiFrameScreenState extends State<PowerBiFrameScreen> {
                           currentIndex = 4;
                         });
                       },
-                      child: Text('5')),
+                      child: const Text('5')),
                 ),
               ],
             ),

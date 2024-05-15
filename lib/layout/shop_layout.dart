@@ -20,7 +20,7 @@ class ShopLayoutScreen extends StatelessWidget {
             mainAxisAlignment:MainAxisAlignment.center,
             children: [
 
-            TextButton(onPressed: (){logOut(context);}, child: Text('Logout'))
+            TextButton(onPressed: (){logOut(context);}, child: const Text('Logout'))
           ],),),
           appBar: AppBar(
             title: const Text('ShoeShack'),

@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:e_commerce_app/layout/cubit.dart';
 import 'package:e_commerce_app/layout/states.dart';
 
-import '../../shared/components/components.dart';
 
 class PowerBiScreen extends StatelessWidget {
   const PowerBiScreen({super.key});
